@@ -28,6 +28,7 @@ class BookFactory extends Factory
         return [
             'title' => $this->faker->sentence(3),
             'author' => $this->faker->name,
+            'available' => $this->faker->boolean(true),
             'isbn' => $this->faker->unique()->isbn13,
             'genre' => $this->faker->randomElement(['Classics', 'Romance', 'Fantasy', 'Science Fiction', 'Dystopian', 'Historical Fiction'])
         ];
