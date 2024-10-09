@@ -11,10 +11,10 @@ class Book extends Model
 
     protected $fillable = ['title', 'author', 'isbn', 'genre','available'];
 
-    public function scopeFilterByName($query, $name)
+    public function scopeFilterByTitle($query, $title)
     {
-        return $query->when($name, function ($q, $name) {
-            $q->where('name', 'LIKE', '%' . $name . '%');
+        return $query->when($title, function ($q, $title) {
+            $q->where('title', 'LIKE', '%' . $title . '%');
         });
     }
 

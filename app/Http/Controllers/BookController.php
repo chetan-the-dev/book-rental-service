@@ -22,13 +22,14 @@ class BookController extends Controller
 
         // Set the default per-page limit or use the one from the request
         $perPage = $request->input('per_page', 10); // Default is 10 items per page
-
+        $title = $request->input('title');
+        $genre = $request->input('genre'); 
         $books = Book::query()
-            ->when($request->input('name'), function ($query, $request) {
-                return $query->filterByName($request->input('name'));
+            ->when($request->input('title'), function ($query, $title) {
+                return $query->filterByTitle($title);
             })
-            ->when($request->input('genre'), function ($query, $request) {
-                return $query->filterByGenre($request->input('genre'));
+            ->when($request->input('genre'), function ($query, $genre) {
+                return $query->filterByGenre($genre);
             })            
             ->where('available', true)
             ->paginate($perPage);
