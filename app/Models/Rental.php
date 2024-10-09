@@ -9,7 +9,7 @@ class Rental extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'book_id', 'rented_at', 'due_at', 'returned_at', 'is_overdue'];
+    protected $fillable = ['user_name', 'user_email', 'book_id', 'rented_at', 'due_at', 'returned_at', 'is_overdue'];
 
     public function book() {
         return $this->belongsTo(Book::class);
