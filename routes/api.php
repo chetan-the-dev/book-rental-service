@@ -13,3 +13,6 @@ Route::get('/user', function (Request $request) {
 
 Route::post('books/search', [BookController::class, 'searchBooks']);
 Route::post('books/{book}/rent', [RentalController::class, 'rentBook']);
+Route::post('rentals/{rental}/return', [RentalController::class, 'returnBook']);
+Route::get('rentals/history', [RentalController::class, 'rentalHistory']);
+Route::get('stats', [RentalController::class, 'stats']);

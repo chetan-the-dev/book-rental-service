@@ -199,4 +199,69 @@ class RentControllerTest extends TestCase
                     'message' => 'Book is not available'
                 ]);
     }
+
+    /**
+     * Test returning a book successfully.
+     */
+    public function test_return_book_successfully()
+    {
+        // Create a book and a rental record
+        $book = Book::factory()->create(['available' => false]); // Book is not available for rent
+        $rental = Rental::factory()->create(['book_id' => $book->id, 'returned_at' => null]);
+
+        // Send POST request to return the book
+        $response = $this->postJson('/api/rentals/' . $rental->id.'/return');
+
+        // Assert that the response is successful
+        $response->assertStatus(200)
+                 ->assertJson([
+                     'status' => 'success',
+                     'message' => 'Book returned successfully'
+                 ]);
+
+        // Assert that the rental record is updated with the returned timestamp
+        $rental->refresh();
+        $this->assertNotNull($rental->returned_at);
+
+        // Assert that the book is now available
+        $book->refresh();
+        $this->assertEquals($book->available,1);
+    }
+
+    /**
+     * Test attempting to return a book that has already been returned.
+     */
+    public function test_return_book_already_returned()
+    {
+        // Create a book and a rental record
+        $book = Book::factory()->create(['available' => false]); // Book is not available for rent
+        $rental = Rental::factory()->create(['book_id' => $book->id, 'returned_at' => now()]); // Already returned
+
+        // Send POST request to return the book
+        $response = $this->postJson('/api/rentals/' . $rental->id.'/return');
+
+        // Assert that the response indicates the book was already returned
+        $response->assertStatus(400)
+                 ->assertJson([
+                     'status' => 'error',
+                     'message' => 'Book was already returned'
+                 ]);
+    }
+
+    /**
+     * Test if the book's availability is updated correctly after return.
+     */
+    public function test_book_availability_updated_after_return()
+    {
+        // Create a book and a rental record
+        $book = Book::factory()->create(['available' => false]); // Book is not available for rent
+        $rental = Rental::factory()->create(['book_id' => $book->id, 'returned_at' => null]);
+
+        // Send POST request to return the book
+        $this->postJson('/api/rentals/' . $rental->id.'/return');
+
+        // Assert that the book is now available
+        $book->refresh();
+        $this->assertEquals($book->available,1);
+    }
 }

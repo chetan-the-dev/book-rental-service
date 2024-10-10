@@ -10,6 +10,12 @@ class Rental extends Model
     use HasFactory;
 
     protected $fillable = ['user_name', 'user_email', 'book_id', 'rented_at', 'due_at', 'returned_at', 'is_overdue'];
+    
+    protected $casts = [
+        'rented_at' => 'datetime',
+        'due_at' => 'datetime',
+        'returned_at' => 'datetime',
+    ];
 
     public function book() {
         return $this->belongsTo(Book::class);
