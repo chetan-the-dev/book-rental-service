@@ -29,28 +29,35 @@ This is a RESTful API for a book rental service built with Laravel 11. It allows
    cd book-rental-service
 
 2. **Install dependencies:**
+   ```bash
    composer install
 
 3. **Set up your environment:**
    Copy the .env.example file to .env:
+   ```bash
    cp .env.example .env
    Make sure in .env file MAIL_MAILER value set to log or use proper mail account details to test mails functionality
    Update the .env file with your database and mail configuration.
 
 4. **Generate application key:**
+   ```bash
    php artisan key:generate
 
 5. **Run migrations:**
+   ```bash
    php artisan migrate
 
 6. **Seed the database:**
+   ```bash
    php artisan db:seed --class=BooksTableSeeder
 
 7. **Setup PHP unit:**
    Copy .env file to .env.test file this fill will store test data in database. 
-   cp .env .env.testing    
    Update the .env.test file with your test database. You need to create seprate database for this and add database name in .env.test file.
+   ```bash
+   cp .env .env.testing       
    php artisan migrate --env=testing
+
 
    You can execute below comand to test the test cases
    php artisan test
